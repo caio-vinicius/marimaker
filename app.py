@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, send_file
 from werkzeug.utils import secure_filename
 import os
+from overlay import do_the_trick
 
 app = Flask(__name__)
 
@@ -28,11 +29,13 @@ def base():
 			filename = secure_filename(file.filename)
 		file_location = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 		file.save(file_location)
+		# magic mike 
+		do_the_trick(file_location)
 		# delete images
 		os.remove(file_location)
 		# call above route /uploads/name and redict user to access image
 		#return redirect(url_for('download_file', name=filename))
-		return file_location	
+		return send_file("./assets/overlay.png", mimetype='image/gif')
 	return render_template("base.html")
 
 app.run()
