@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, send_file
 from werkzeug.utils import secure_filename
+import flask
 import os
 from overlay import do_the_trick
 from flask_cors import CORS
@@ -51,7 +52,7 @@ def base():
 		os.remove(file_location)
 		# call above route /uploads/name and redict user to access image
 		#return redirect(url_for('download_file', name=filename))
-		return send_file("./assets/overlay.png", mimetype='image/gif')
+		return flask.redirect("/edit")
 	return render_template("base.html")
 
 app.run()
