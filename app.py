@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, send_from_
 from werkzeug.utils import secure_filename
 import os
 from overlay import do_the_trick
-from flask_cors import CORS
 
 app = Flask(__name__, static_url_path='/assets')
 app.config['UPLOAD_FOLDER'] = './images'
