@@ -7,7 +7,7 @@
 		<div id=canvas>
 			<img id="background" src='../assets/cyan_background.png' width="600"/>
 			<img id="star" src="../assets/magenta_star.png" width="300"/>
-			<img id="img" src="../assets/overlay.png" width="500"/>
+			<img id="img" src="../assets/overlay.png" class="filter-drop-shadow" width="500"/>
 			<img id="ret" />
 		</div>
 		<div id=inputs>
@@ -60,11 +60,9 @@
 				<input type="button" value="Size -50" onclick="retStyle('s', -25);">
 				<input type="button" value="Size +50" onclick="retStyle('s', 25);">
 				<br><br>
-				<input type="button" value="SAVE" onclick="printDiv();">
-				<br><br>
 			</form>
 		</div>
-		<div id="saved"></div>
+
 	<body>
 	<script src="/html2canvas/html2canvas.js"></script>
 </html>
@@ -84,11 +82,16 @@
 	}
 	#ret{
 		z-index: 3;
-		width: 50px;
-		height: 20px;
-		background-color: rgba(255, 255, 0, 0.7);
+		width: 150px;
+		height: 60px;
+		background-color: rgba(231,38,136,0.7);
 		border: none;
 		mix-blend-mode: color;
+		margin-top: 250px;
+		margin-left: 250px;
+	}
+	.filter-drop-shadow {
+		filter: drop-shadow( -20px -10px rgba(250,205,20,1));
 	}
 	input{
 		width: 100px;
@@ -111,9 +114,9 @@
 	var x_img = 0;
 	var y_img = 0;
 	var s_img = 500;
-	var x_ret = 0;
-	var y_ret = 0;
-	var s_ret = 25;
+	var x_ret = 250;
+	var y_ret = 250;
+	var s_ret = 100;
 	
 	function printDiv()
 	{
@@ -134,7 +137,7 @@
 		if(color == "magenta")
 			document.getElementById("ret").style.backgroundColor = "rgba(231,38,136,0.7)";
 		if(color == "yellow")
-			document.getElementById("ret").style.backgroundColor = "rgba(255,205,3,0.7)";;
+			document.getElementById("ret").style.backgroundColor = "rgba(255,205,20,0.7)";;
 		if(color == "cyan")
 			document.getElementById("ret").style.backgroundColor = "rgba(15,207,211,0.7)";
     }
