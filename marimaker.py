@@ -51,5 +51,3 @@ def base():
 		#return redirect(url_for('download_file', name=filename))
 		return redirect("/edit/" + path)
 	return render_template("base.html")
-
-app.run(host="0.0.0.0")
