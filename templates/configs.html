@@ -8,6 +8,7 @@
 			<img id="background" src='../assets/cyan_background.png' width="600"/>
 			<img id="star" src="../assets/magenta_star.png" width="300"/>
 			<img id="img" src="../assets/overlay.png" width="500"/>
+			<img id="ret" />
 		</div>
 		<div id=inputs>
 			<form>
@@ -20,6 +21,11 @@
 				<input type="button" value="MAGENTA" onclick="turnStar('magenta');">
 				<input type="button" value="YELLOW" onclick="turnStar('yellow');">
 				<input type="button" value="CYAN" onclick="turnStar('cyan');">
+				<br><br>
+				<label for="rectangle_color">Rectangle Color:</label>
+				<input type="button" value="MAGENTA" onclick="turnRectangle('magenta');">
+				<input type="button" value="YELLOW" onclick="turnRectangle('yellow');">
+				<input type="button" value="CYAN" onclick="turnRectangle('cyan');">
 				<br><br>
 				<label for="star_position">Star Position:</label>
 				<br><br>
@@ -43,6 +49,17 @@
 				<input type="button" value="Size -50" onclick="imageStyle('s', -50);">
 				<input type="button" value="Size +50" onclick="imageStyle('s', 50);">
 				<br><br>
+				<label for="Image_position">Rectangle Position:</label>
+				<br><br>
+				<input type="button" value="X -10" onclick="retStyle('x', -10)">
+				<input type="button" value="X +10" onclick="retStyle('x', 10);">
+				<br><br>
+				<input type="button" value="Y -10" onclick="retStyle('y', 10);">
+				<input type="button" value="Y +10" onclick="retStyle('y', -10);">
+				<br><br>
+				<input type="button" value="Size -50" onclick="retStyle('s', -25);">
+				<input type="button" value="Size +50" onclick="retStyle('s', 25);">
+				<br><br>
 				<input type="button" value="SAVE" onclick="printDiv();">
 				<br><br>
 			</form>
@@ -61,15 +78,24 @@
 	}	
 	#star{
 		z-index: 1;
-		margin-left: 0px;
 	}
 	#img{
 		z-index: 2;
+	}
+	#ret{
+		z-index: 3;
+		width: 50px;
+		height: 20px;
+		background-color: rgba(255, 255, 0, 0.7);
+		border: none;
+		mix-blend-mode: color;
 	}
 	input{
 		width: 100px;
 	}
 	#inputs{
+		position: absolute;
+		z-index: 4;
 		background-color: #f2f2f2;
 		padding: 5px;
 		margin-left: 650px;
@@ -85,6 +111,9 @@
 	var x_img = 0;
 	var y_img = 0;
 	var s_img = 500;
+	var x_ret = 0;
+	var y_ret = 0;
+	var s_ret = 25;
 	
 	function printDiv()
 	{
@@ -99,6 +128,15 @@
     {
 		document.getElementById('star').
 		src='../assets/'+color+'_star.png';
+    }
+	function turnRectangle(color)
+    {
+		if(color == "magenta")
+			document.getElementById("ret").style.backgroundColor = "rgba(231,38,136,0.7)";
+		if(color == "yellow")
+			document.getElementById("ret").style.backgroundColor = "rgba(255,205,3,0.7)";;
+		if(color == "cyan")
+			document.getElementById("ret").style.backgroundColor = "rgba(15,207,211,0.7)";
     }
 	function starStyle(mode, amount)
 	{
@@ -134,6 +172,25 @@
 		{
 			s_img += amount;
 			document.getElementById("img").style.width = (s_img.toString())+"px"
+		}
+	}
+	function retStyle(mode, amount)
+	{
+		if (mode == 'x')
+		{
+			x_ret += amount;
+			document.getElementById("ret").style.marginLeft = (x_ret.toString())+"px"
+		}
+		if (mode == 'y')
+		{
+			y_ret += amount;
+			document.getElementById("ret").style.marginTop = (y_ret.toString())+"px"
+		}
+		if (mode == 's')
+		{
+			s_ret += amount;
+			document.getElementById("ret").style.width = (s_ret.toString())+"px"
+			document.getElementById("ret").style.height = ((s_ret/2.5).toString())+"px"
 		}
 	}
 </script>
