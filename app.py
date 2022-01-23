@@ -3,9 +3,9 @@ from werkzeug.utils import secure_filename
 import os
 from overlay import do_the_trick
 
-app = Flask(__name__)
-
+app = Flask(__name__, static_url_path='/assets')
 app.config['UPLOAD_FOLDER'] = './images'
+app.config['ASSETS'] = './assets'
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1000 * 1000
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -16,6 +16,14 @@ def allowed_file(filename):
 @app.route('/uploads/<name>')
 def download_file(name):
     return send_from_directory(app.config["UPLOAD_FOLDER"], name)
+
+@app.route('/assets/<name>')
+def image_file(name):
+    return send_from_directory(app.config["ASSETS"], name)
+
+@app.route('/edit/',methods=['GET', 'POST'])
+def config():
+	return render_template("configs.html")
 
 @app.route("/", methods=["GET", "POST"])
 def base():
