@@ -180,6 +180,9 @@
 </style>
 
 <script>
+	thePath = window.location.href;
+    thePath = thePath.split("/")[4];
+	document.getElementById("img").src = "../assets/"+thePath+".png"
 	var x_star = 0;
 	var y_star = 0;
 	var s_star = 300;
