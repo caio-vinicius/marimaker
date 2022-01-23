@@ -52,4 +52,4 @@ def base():
 		return redirect("/edit")
 	return render_template("base.html")
 
-app.run()
+app.run(host="0.0.0.0")

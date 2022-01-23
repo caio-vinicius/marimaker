@@ -6,9 +6,50 @@
 #
 
 -i https://pypi.org/simple
+backgroundremover==0.1.9
+beautifulsoup4==4.10.0; python_version >= '3.1'
+certifi==2021.10.8
+charset-normalizer==2.0.10; python_version >= '3.5'
 click==8.0.3; python_version >= '3.6'
+commandlines==0.4.1
+decorator==4.4.2
+ffmpeg-python==0.2.0
+filelock==3.4.2; python_version >= '3.7'
+filetype==1.0.9
 flask==2.0.2
+future==0.18.2; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
+gdown==4.2.0
+hsh==1.1.0
+idna==3.3; python_version >= '3.5'
+imageio-ffmpeg==0.4.5; python_version >= '3.4'
+imageio==2.9.0; python_version >= '3.4'
 itsdangerous==2.0.1; python_version >= '3.6'
 jinja2==3.0.3; python_version >= '3.6'
+llvmlite==0.38.0; python_version < '3.11' and python_version >= '3.7'
 markupsafe==2.0.1; python_version >= '3.6'
+more-itertools==8.7.0; python_version >= '3.5'
+moviepy==1.0.3
+networkx==2.6.3; python_version >= '3.7'
+numba==0.55.0; python_version < '3.11' and python_version >= '3.7'
+numpy==1.21.5; python_version < '3.11' and python_version >= '3.7'
+packaging==21.3; python_version >= '3.6'
+pillow==8.1.1
+proglog==0.1.9
+pymatting==1.1.5; python_version >= '3'
+pyparsing==3.0.7; python_version >= '3.6'
+pysocks==1.7.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+pywavelets==1.2.0; python_version >= '3.7'
+requests==2.27.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'
+scikit-image==0.19.1; python_version >= '3.7'
+scipy==1.7.3; python_version < '3.11' and python_version >= '3.7'
+setuptools==60.5.0; python_version >= '3.7'
+six==1.16.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+soupsieve==2.3.1; python_version >= '3.6'
+tifffile==2021.11.2; python_version >= '3.7'
+torch==1.10.1; python_full_version >= '3.6.2'
+torchvision==0.11.2
+tqdm==4.62.3; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
+typing-extensions==4.0.1; python_version >= '3.6'
+urllib3==1.26.6; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
+waitress==2.0.0; python_version >= '3.6'
 werkzeug==2.0.2; python_version >= '3.6'
