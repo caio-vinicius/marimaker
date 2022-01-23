@@ -4,10 +4,10 @@
 		<title>Marimaker</title>
 	<header>
 	<body>
-		<div id=edit>
-			<img id="background" src="{{url_for('static', filename='../assets/cyan_background.png')}}" width="600"/>
-			<img id="star" src="{{url_for('static', filename='../assets/magenta_star.png')}}" width="300"/>
-			<img id=img src="{{url_for('static', filename='../assets/cropResult.png')}}" width="500"/>
+		<div id=canvas>
+			<img id="background" src='../assets/cyan_background.png' width="600"/>
+			<img id="star" src="../assets/magenta_star.png" width="300"/>
+			<img id="img" src="../assets/cropResult.png" width="500"/>
 		</div>
 		<div id=inputs>
 			<form>
@@ -22,20 +22,34 @@
 				<input type="button" value="CYAN" onclick="turnStar('cyan');">
 				<br><br>
 				<label for="star_position">Star Position:</label>
-				<input type="number" id="star_x" name="Star X" placeholder="Star X = 1">
-				<input type="number" id="star_y" name="Star Y" placeholder="Star Y = 1">
-				<input type="number" id="star_size" name="Star Size" placeholder="Star Size = 1">
+				<br><br>
+				<input type="button" value="X -10" onclick="starStyle('x', -10)">
+				<input type="button" value="X +10" onclick="starStyle('x', 10);">
+				<br><br>
+				<input type="button" value="Y -10" onclick="starStyle('y', -10);">
+				<input type="button" value="Y +10" onclick="starStyle('y', 10);">
+				<br><br>
+				<input type="button" value="Size -50" onclick="starStyle('s', -50);">
+				<input type="button" value="Size +50" onclick="starStyle('s', 50);">
 				<br><br>
 				<label for="Image_position">Image Position:</label>
-				<input type="number" id="Image_x" name="Image X" placeholder="Image X = 1">
-				<input type="number" id="Image_y" name="Image Y" placeholder="Image Y = 1">
-				<input type="number" id="Image_size" name="Image Size" placeholder="Image Size = 1">
 				<br><br>
-				<input type="submit" value="SAVE">
+				<input type="button" value="X -10" onclick="imageStyle('x', -10)">
+				<input type="button" value="X +10" onclick="imageStyle('x', 10);">
+				<br><br>
+				<input type="button" value="Y -10" onclick="imageStyle('y', 10);">
+				<input type="button" value="Y +10" onclick="imageStyle('y', -10);">
+				<br><br>
+				<input type="button" value="Size -50" onclick="imageStyle('s', -50);">
+				<input type="button" value="Size +50" onclick="imageStyle('s', 50);">
+				<br><br>
+				<input type="button" value="SAVE" onclick="printDiv();">
 				<br><br>
 			</form>
 		</div>
+		<div id="saved"></div>
 	<body>
+	<script src="/html2canvas/html2canvas.js"></script>
 </html>
 
 <style>
@@ -61,9 +75,21 @@
 		margin-left: 650px;
 		width: 500px;
 	}
+	
 </style>
 
 <script>
+	var x_star = 0;
+	var y_star = 0;
+	var s_star = 300;
+	var x_img = 0;
+	var y_img = 0;
+	var s_img = 500;
+	
+	function printDiv()
+	{
+		console.log();
+	}
 	function turnBackground(color)
     {
     	document.getElementById('background').
@@ -74,8 +100,40 @@
 		document.getElementById('star').
 		src='../assets/'+color+'_star.png';
     }
-	function changeStarX(amount)
+	function starStyle(mode, amount)
 	{
-		document.getElementById("star").style.marginLeft = amount;
+		if (mode == 'x')
+		{
+			x_star += amount;
+			document.getElementById("star").style.marginLeft = (x_star.toString())+"px"
+		}
+		if (mode == 'y')
+		{
+			y_star += amount;
+			document.getElementById("star").style.marginTop = (y_star.toString())+"px"
+		}
+		if (mode == 's')
+		{
+			s_star += amount;
+			document.getElementById("star").style.width = (s_star.toString())+"px"
+		}
+	}
+	function imageStyle(mode, amount)
+	{
+		if (mode == 'x')
+		{
+			x_img += amount;
+			document.getElementById("img").style.marginLeft = (x_img.toString())+"px"
+		}
+		if (mode == 'y')
+		{
+			y_img += amount;
+			document.getElementById("img").style.marginTop = (y_img.toString())+"px"
+		}
+		if (mode == 's')
+		{
+			s_img += amount;
+			document.getElementById("img").style.width = (s_img.toString())+"px"
+		}
 	}
 </script>

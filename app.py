@@ -2,10 +2,13 @@ from flask import Flask, render_template, request, redirect, url_for, send_from_
 from werkzeug.utils import secure_filename
 import os
 from overlay import do_the_trick
+from flask_cors import CORS
 
 app = Flask(__name__, static_url_path='/assets')
+CORS(app)
 app.config['UPLOAD_FOLDER'] = './images'
 app.config['ASSETS'] = './assets'
+app.config['JS'] = './'
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1000 * 1000
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -17,6 +20,10 @@ def allowed_file(filename):
 def download_file(name):
     return send_from_directory(app.config["UPLOAD_FOLDER"], name)
 
+@app.route('/html2canvas/<name>')
+def js(name):
+    return send_from_directory(app.config["JS"], name)
+
 @app.route('/assets/<name>')
 def image_file(name):
     return send_from_directory(app.config["ASSETS"], name)
@@ -24,6 +31,7 @@ def image_file(name):
 @app.route('/edit/',methods=['GET', 'POST'])
 def config():
 	return render_template("configs.html")
+
 
 @app.route("/", methods=["GET", "POST"])
 def base():
