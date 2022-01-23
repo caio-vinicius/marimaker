@@ -1,18 +1,6 @@
 
-from PIL import Image, ImageOps, ImageEnhance
-import cv2
-import matplotlib.pyplot as plt
+from PIL import Image, ImageEnhance
 import os
-
-def contour():
-	image = cv2.imread("./assets/cropResult.png")
-	image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-	gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-	_, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV)
-	contours, hierarchy = cv2.findContours(binary, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-	image = cv2.drawContours(image, contours, -1, (255, 255, 0), 5)
-	plt.imshow(image)
-	plt.savefig("./assets/countornedResult.png", bbox_inches='tight', pad_inches=0)
 
 def do_the_trick(path):
 	img = Image.open(path)

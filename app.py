@@ -1,12 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, send_file
 from werkzeug.utils import secure_filename
-import flask
 import os
 from overlay import do_the_trick
 from flask_cors import CORS
 
 app = Flask(__name__, static_url_path='/assets')
-CORS(app)
 app.config['UPLOAD_FOLDER'] = './images'
 app.config['ASSETS'] = './assets'
 app.config['JS'] = './'
@@ -52,7 +50,7 @@ def base():
 		os.remove(file_location)
 		# call above route /uploads/name and redict user to access image
 		#return redirect(url_for('download_file', name=filename))
-		return flask.redirect("/edit")
+		return redirect("/edit")
 	return render_template("base.html")
 
 app.run()
