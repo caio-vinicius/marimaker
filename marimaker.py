@@ -26,10 +26,13 @@ def js(name):
 def image_file(name):
     return send_from_directory(app.config["ASSETS"], name)
 
+@app.route('/images/<name>')
+def upload_file(name):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
+
 @app.route('/edit/<name>',methods=['GET', 'POST'])
 def config(name):
-	return render_template("configs.html")
-
+	return render_template("edit.html")
 
 @app.route("/", methods=["GET", "POST"])
 def base():
@@ -43,11 +46,12 @@ def base():
 			filename = secure_filename(file.filename)
 		file_location = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 		file.save(file_location)
-		# magic mike 
+		# magic mike
+		print(file_location)
 		path = do_the_trick(file_location)
 		# delete images
 		os.remove(file_location)
 		# call above route /uploads/name and redict user to access image
 		#return redirect(url_for('download_file', name=filename))
 		return redirect("/edit/" + path)
-	return render_template("base.html")
+	return render_template("home.html")

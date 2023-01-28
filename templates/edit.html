@@ -24,16 +24,19 @@
 				<input type="button" class="button bgc_magenta" value="MAGENTA" onclick="turnStar('magenta');">
 				<input type="button" class="button bgc_yellow" value="YELLOW" onclick="turnStar('yellow');">
 				<input type="button" class="button bgc_cyan" value="CYAN" onclick="turnStar('cyan');">
+				<input type="color" id="colorpickerStar" value="#000000">
 				<br><br>
 				<label for="rectangle_color">Rectangle Color:</label>
 				<input type="button" class="button bgc_magenta" value="MAGENTA" onclick="turnRectangle('magenta');">
 				<input type="button" class="button bgc_yellow" value="YELLOW" onclick="turnRectangle('yellow');">
 				<input type="button" class="button bgc_cyan" value="CYAN" onclick="turnRectangle('cyan');">
+				<input type="color" id="colorpickerRec" value="#000000">
 				<br><br>
 				<label for="shadow_color">Shadow Color:</label>
 				<input type="button" class="button bgc_magenta" value="MAGENTA" onclick="turnShadow('magenta');">
 				<input type="button" class="button bgc_yellow" value="YELLOW" onclick="turnShadow('yellow');">
 				<input type="button" class="button bgc_cyan" value="CYAN" onclick="turnShadow('cyan');">
+				<input type="color" id="colorpickerShadow" value="#000000">
 				<br><br>
 				<select id="configs" onclick=selectOp()>
 					<option value="selectImage">Move Image</option>
@@ -207,7 +210,7 @@
 <script>
 	thePath = window.location.href;
     thePath = thePath.split("/")[4];
-	document.getElementById("img").src = "../assets/"+thePath+".png"
+	document.getElementById("img").src = "../images/"+thePath+".png"
 	var x_star = 0;
 	var y_star = 0;
 	var s_star = 300;

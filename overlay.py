@@ -11,11 +11,11 @@ def do_the_trick(path):
 	wpercent = (basewidth/float(img.size[0]))
 	hsize = int((float(img.size[1])*float(wpercent)))
 	img = img.resize((basewidth,hsize), Image.ANTIALIAS)
-	img.save("./assets/"+rand+"_up.png")
-	string = "backgroundremover -i " + "./assets/"+rand+"_up.png" + " -m "+ "u2net_human_seg" + " -o " + "./assets/"+rand+"_res.png"
+	img.save("./images/"+rand+"_up.png")
+	string = "backgroundremover -i " + "./images/"+rand+"_up.png" + " -m "+ "u2net_human_seg" + " -o " + "./images/"+rand+"_res.png"
 	os.system(string)
-	cropedImage = Image.open("./assets/"+rand+"_res.png")
+	cropedImage = Image.open("./images/"+rand+"_res.png")
 	converter = ImageEnhance.Color(cropedImage)
 	cropedImage = converter.enhance(0)
-	cropedImage.save("./assets/"+rand+".png")
+	cropedImage.save("./images/"+rand+".png")
 	return rand
