@@ -2,3 +2,4 @@ Deletar os arquivos não usados depois da execução, e também depois de um cer
 Substituir o número por um hash, para menor chance de conflito.
 Documentação.
 MVP: Homepage, edit.
+Botão de enviar só aparece quando o cara bota algo.
