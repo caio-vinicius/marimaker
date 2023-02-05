@@ -6,7 +6,6 @@ from overlay import do_the_trick
 app = Flask(__name__, static_url_path='/assets')
 app.config['UPLOAD_FOLDER'] = './images'
 app.config['ASSETS'] = './assets'
-app.config['JS'] = './'
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1000 * 1000
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -18,9 +17,9 @@ def allowed_file(filename):
 def download_file(name):
     return send_from_directory(app.config["UPLOAD_FOLDER"], name)
 
-@app.route('/html2canvas/<name>')
-def js(name):
-    return send_from_directory(app.config["JS"], name)
+@app.route("/scripts/<path:filename>")
+def serve_script(filename):
+    return send_from_directory("templates", filename)
 
 @app.route('/assets/<name>')
 def image_file(name):

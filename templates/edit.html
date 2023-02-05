@@ -1,107 +1,212 @@
 <!doctype html>
 <html>
-	<header>
-		<title>Marimaker</title>
-		<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
-	<header>
-	<body>
-		<div id="canvas">
-			<img id="background" src='../assets/cyan_background.png' width="600"/>
-			<img id="star" src="../assets/magenta_star.png" width="300"/>
-			<img id="img" src="../assets/overlay.png" class="filter-yellow" width="500"/>
-			<img id="ret" />
+<header>
+	<title>Marimaker</title>
+	<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
+  <script src="{{ url_for('serve_script', filename='spaceObject.js') }}"></script>
+<header>
+<body>
+  <div id="toComp">
+
+    <div id=inputs>
+      <form>
+        <label for="background_color">Background Color:</label>
+        <input type="button" class="button bgc_magenta" value="MAGENTA" onclick="turnBackground('magenta');">
+        <input type="button" class="button bgc_yellow" value="YELLOW" onclick="turnBackground('yellow');">
+        <input type="button" class="button bgc_cyan" value="CYAN" onclick="turnBackground('cyan');">
+        <br><br>
+        <label for="star_color">Star Color:</label>
+        <input type="button" class="button bgc_magenta" value="MAGENTA" onclick="turnStar('magenta');">
+        <input type="button" class="button bgc_yellow" value="YELLOW" onclick="turnStar('yellow');">
+        <input type="button" class="button bgc_cyan" value="CYAN" onclick="turnStar('cyan');">
+        <input type="color" id="colorpickerStar" value="#000000">
+        <br><br>
+        <label for="rectangle_color">Rectangle Color:</label>
+        <input type="button" class="button bgc_magenta" value="MAGENTA" onclick="turnRectangle('magenta');">
+        <input type="button" class="button bgc_yellow" value="YELLOW" onclick="turnRectangle('yellow');">
+        <input type="button" class="button bgc_cyan" value="CYAN" onclick="turnRectangle('cyan');">
+        <input type="color" id="colorpickerRec" value="#000000">
+        <br><br>
+        <label for="shadow_color">Shadow Color:</label>
+        <input type="button" class="button bgc_magenta" value="MAGENTA" onclick="turnShadow('magenta');">
+        <input type="button" class="button bgc_yellow" value="YELLOW" onclick="turnShadow('yellow');">
+        <input type="button" class="button bgc_cyan" value="CYAN" onclick="turnShadow('cyan');">
+        <input type="color" id="colorpickerShadow" value="#000000">
+        <br><br>
+        <select id="configs" onclick=selectOp()>
+          <option value="selectImage">Move Image</option>
+          <option value="selectStar">Move Star</option>
+          <option value="selectRet">Move Rectangle</option>
+        </select>
+        <br>
+        <div id="controller">
+          <div id="optionsImage">
+            <label for="Image_position">Image Position:</label>
+            <br><br>
+            <input type="button" class=button value="🢁" onclick="imageStyle('y', -10);" style="margin-left: 112px;">
+            <br><br>
+            <input type="button" class=button value="🢀" onclick="imageStyle('x', -10)">
+            <input type="button" class=button value="🢂" onclick="imageStyle('x', 10);" style="margin-left: 116px;">
+            <br><br>
+            <input type="button" class=button value="🢃" onclick="imageStyle('y', 10);" style="margin-left: 112px;">
+            <br><br>
+            <input type="button" class=button value="🞓 decrease size" onclick="imageStyle('s', -50);"style="padding: 1rem 5rem;">
+            <input type="button" class=button value="🞑 increase size" onclick="imageStyle('s', 50);"style="padding: 1rem 5rem;">
+            <br><br>
+          </div>
+          <div id="optionsStar">
+            <label for="star_position">Star Position:</label>
+            <br><br>
+            <input type="button" class=button value="🢁" onclick="starStyle('y', -10);"style="margin-left: 112px;">
+            <br><br>
+            <input type="button" class=button value="🢀" onclick="starStyle('x', -10)">
+            <input type="button" class=button value="🢂" onclick="starStyle('x', 10);"style="margin-left: 116px;">
+            <br><br>
+            <input type="button" class=button value="🢃" onclick="starStyle('y', 10);"style="margin-left: 112px;">
+            <br><br>
+            <input type="button" class=button value="🞓 decrease size" onclick="starStyle('s', -50);"style="padding: 1rem 5rem;">
+            <input type="button" class=button value="🞑 increase size" onclick="starStyle('s', 50);"style="padding: 1rem 5rem;">
+            <br><br>
+          </div>
+          <div id="optionsRet">
+            <label for="Image_position">Rectangle Position:</label>
+            <br><br>
+            <input type="button" class=button value="🢁" onclick="retStyle('y', -10); "style="margin-left: 112px;">
+            <br><br>
+            <input type="button" class=button value="🢀" onclick="retStyle('x', -10)">
+            <input type="button" class=button value="🢂" onclick="retStyle('x', 10); "style="margin-left: 116px;">
+            <br><br>
+            <input type="button" class=button value="🢃" onclick="retStyle('y', 10); "style="margin-left: 112px;">
+            <br><br>
+            <input type="button" class=button value="🞓 decrease size" onclick="retStyle('s', -25);"style="padding: 1rem 5rem;">
+            <input type="button" class=button value="🞑 increase size" onclick="retStyle('s', 25);"style="padding: 1rem 5rem;">
+            <br><br>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div id="canvas">
+      <img id="background" src='../assets/cyan_background.png' width="600"/>
+      <img id="star" src="../assets/magenta_star.png" width="300"/>
+      <img id="img" src="../assets/overlay.png" class="filter-yellow" width="500"/>
+      <img id="ret" />
 		</div>
-		<div id=inputs>
-			<form>
-				<label for="background_color">Background Color:</label>
-				<input type="button" class="button bgc_magenta" value="MAGENTA" onclick="turnBackground('magenta');">
-				<input type="button" class="button bgc_yellow" value="YELLOW" onclick="turnBackground('yellow');">
-				<input type="button" class="button bgc_cyan" value="CYAN" onclick="turnBackground('cyan');">
-				<br><br>
-				<label for="star_color">Star Color:</label>
-				<input type="button" class="button bgc_magenta" value="MAGENTA" onclick="turnStar('magenta');">
-				<input type="button" class="button bgc_yellow" value="YELLOW" onclick="turnStar('yellow');">
-				<input type="button" class="button bgc_cyan" value="CYAN" onclick="turnStar('cyan');">
-				<input type="color" id="colorpickerStar" value="#000000">
-				<br><br>
-				<label for="rectangle_color">Rectangle Color:</label>
-				<input type="button" class="button bgc_magenta" value="MAGENTA" onclick="turnRectangle('magenta');">
-				<input type="button" class="button bgc_yellow" value="YELLOW" onclick="turnRectangle('yellow');">
-				<input type="button" class="button bgc_cyan" value="CYAN" onclick="turnRectangle('cyan');">
-				<input type="color" id="colorpickerRec" value="#000000">
-				<br><br>
-				<label for="shadow_color">Shadow Color:</label>
-				<input type="button" class="button bgc_magenta" value="MAGENTA" onclick="turnShadow('magenta');">
-				<input type="button" class="button bgc_yellow" value="YELLOW" onclick="turnShadow('yellow');">
-				<input type="button" class="button bgc_cyan" value="CYAN" onclick="turnShadow('cyan');">
-				<input type="color" id="colorpickerShadow" value="#000000">
-				<br><br>
-				<select id="configs" onclick=selectOp()>
-					<option value="selectImage">Move Image</option>
-					<option value="selectStar">Move Star</option>
-					<option value="selectRet">Move Rectangle</option>
-				</select>
-				<br>
-				<div id="controller">
-					<div id="optionsImage">
-						<label for="Image_position">Image Position:</label>
-						<br><br>
-						<input type="button" class=button value="🢁" onclick="imageStyle('y', -10);" style="margin-left: 112px;">
-						<br><br>
-						<input type="button" class=button value="🢀" onclick="imageStyle('x', -10)">
-						<input type="button" class=button value="🢂" onclick="imageStyle('x', 10);" style="margin-left: 116px;">
-						<br><br>
-						<input type="button" class=button value="🢃" onclick="imageStyle('y', 10);" style="margin-left: 112px;">
-						<br><br>
-						<input type="button" class=button value="🞓 decrease size" onclick="imageStyle('s', -50);"style="padding: 1rem 5rem;">
-						<input type="button" class=button value="🞑 increase size" onclick="imageStyle('s', 50);"style="padding: 1rem 5rem;">
-						<br><br>
-					</div>
-					<div id="optionsStar">
-						<label for="star_position">Star Position:</label>
-						<br><br>
-						<input type="button" class=button value="🢁" onclick="starStyle('y', -10);"style="margin-left: 112px;">
-						<br><br>
-						<input type="button" class=button value="🢀" onclick="starStyle('x', -10)">
-						<input type="button" class=button value="🢂" onclick="starStyle('x', 10);"style="margin-left: 116px;">
-						<br><br>
-						<input type="button" class=button value="🢃" onclick="starStyle('y', 10);"style="margin-left: 112px;">
-						<br><br>
-						<input type="button" class=button value="🞓 decrease size" onclick="starStyle('s', -50);"style="padding: 1rem 5rem;">
-						<input type="button" class=button value="🞑 increase size" onclick="starStyle('s', 50);"style="padding: 1rem 5rem;">
-						<br><br>
-					</div>
-					<div id="optionsRet">
-						<label for="Image_position">Rectangle Position:</label>
-						<br><br>
-						<input type="button" class=button value="🢁" onclick="retStyle('y', -10); "style="margin-left: 112px;">
-						<br><br>
-						<input type="button" class=button value="🢀" onclick="retStyle('x', -10)">
-						<input type="button" class=button value="🢂" onclick="retStyle('x', 10); "style="margin-left: 116px;">
-						<br><br>
-						<input type="button" class=button value="🢃" onclick="retStyle('y', 10); "style="margin-left: 112px;">
-						<br><br>
-						<input type="button" class=button value="🞓 decrease size" onclick="retStyle('s', -25);"style="padding: 1rem 5rem;">
-						<input type="button" class=button value="🞑 increase size" onclick="retStyle('s', 25);"style="padding: 1rem 5rem;">
-						<br><br>
-					</div>
-				</div>
-				<h2>Note que não há botão para download, para salvar a imagem use uma ferramenta de printscreen!</h2>
-			</form>
-			<button id="convert-button">Convert to canvas</button>
-		</div>
-		<div id='output'></div>
-		<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-	<body>
+
+  </div>
+<body>
 </html>
+
+
+<script>
+
+	thePath = window.location.href.split("/")[4];
+	document.getElementById("img").src = "../images/"+thePath+".png"
+
+  var star = new spaceObject(0,0,300);
+  var img = new spaceObject(0,0,500);
+  var ret = new spaceObject(250, 250, 100);
+
+	var colors = ["magenta","yellow","cyan"];
+  var colorsCode = ["rgba(231,38,136,0.7)","rgba(255,205,20,0.7)","rgba(15,207,211,0.7)"];
+  var filters = ["filter-magenta", "filter-yellow", "filter-cyan"];
+  var options = ["optionsRet", "optionsImage", "optionsStar"];
+  var selects = ["selectRet", "selectImage", "selectStar"];
+  var modes = ['x','y','s'];
+  var sets = ["setX", "setY", "setSize"];
+  var cssStyle = ["marginLeft", "marginTop", "width"];
+  var gets = ["getX", "getY", "getSize"];
+
+	function selectOp()
+	{
+		var card = document.getElementById("configs").value;
+    for(var i = 0; i < 3; i++)
+      document.getElementById(options[i]).style.display = (card === selects[i] ? "block" : "none");
+	}
+
+	function turnBackground(color)
+  {
+    document.getElementById('background').src='../assets/'+color+'_background.png';
+  }
+
+	function turnStar(color)
+  {
+		document.getElementById('star').src='../assets/'+color+'_star.png';
+  }
+
+	function turnRectangle(color)
+  {
+    for(var i = 0; i < 3; i++)
+      if(colors[i] === color)
+        document.getElementById("ret").style.backgroundColor = colorsCode[i];
+  }
+
+	function turnShadow(color)
+  {
+    for(var i = 0; i < 3; i++)
+      if(colors[i] === color)
+        document.getElementById('img').className = filters[i];
+  }
+
+	function starStyle(mode, amount)
+	{
+    var obj = document.getElementById("star").style;
+
+    for (let i = 0; i < 3; i++) {
+      if(modes[i] == mode)
+      {
+        star[sets[i]](amount);
+        obj[cssStyle[i]] = (star[gets[i]]().toString())+"px"
+      }
+    }
+	}
+	function imageStyle(mode, amount)
+	{
+    var obj = document.getElementById("img").style;
+
+    for (let i = 0; i < 3; i++) {
+      if(modes[i] == mode)
+      {
+        img[sets[i]](amount);
+        obj[cssStyle[i]] = (img[gets[i]]().toString())+"px"
+      }
+    }
+	}
+	function retStyle(mode, amount)
+	{
+    var obj = document.getElementById("ret").style;
+
+    for (let i = 0; i < 2; i++) {
+      if(modes[i] == mode)
+      {
+        ret[sets[i]](amount);
+        obj[cssStyle[i]] = (ret[gets[i]]().toString())+"px"
+      }
+    }
+    if(mode == 's')
+    {
+      ret.setSize(amount);
+      obj.height = ((ret.getSize()/2.5).toString())+"px";
+      obj.width = (ret.getSize().toString())+"px";
+    }
+	}
+</script>
 
 <style>
 	#canvas{
 		/* To define */
 		width: 600px;
-		height: 590px;
+		height: 600px;
+    border:10px solid black;
+    z-index: 5;
+	}
+  #inputs{
+		z-index: 4;
+		background-color: #f2f2f2;
+		padding: 5px;
+		width: 550px;
 	}
 	#optionsRet{
 		display: none;
@@ -152,14 +257,7 @@
 	input{
 		width: 100px;
 	}
-	#inputs{
-		position: absolute;
-		z-index: 4;
-		background-color: #f2f2f2;
-		padding: 5px;
-		margin-left: 650px;
-		width: 700px;
-	}
+
 	.button{
 		align-items: center;
 		background-color: #fff;
@@ -206,147 +304,15 @@
 		background-color: rgba(15,207,211,0.7);
 	}
 	body{
-	background-color: beige;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	  background-color: beige;
+	  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	}
 	#controller{
 		margin-left: 155px;
 	}
+  #toComp{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+  }
 </style>
-
-<script>
-	var downloadButton = document.getElementById("convert-button");
-	downloadButton.addEventListener("click", function() {
-		html2canvas(document.getElementById("canvas")).then(function(canvas) {
-			canvas.toBlob(function(blob) {
-				var url = URL.createObjectURL(blob);
-				var link = document.createElement('a');
-				link.href = url;
-				link.download = "image.png";
-				link.click();
-			});
-		});
-});
-
-	thePath = window.location.href;
-    thePath = thePath.split("/")[4];
-	document.getElementById("img").src = "../images/"+thePath+".png"
-	var x_star = 0;
-	var y_star = 0;
-	var s_star = 300;
-	var x_img = 0;
-	var y_img = 0;
-	var s_img = 500;
-	var x_ret = 250;
-	var y_ret = 250;
-	var s_ret = 100;
-	
-	function selectOp()
-	{
-		var card = document.getElementById("configs").value;
-		console.log(card);
-		document.getElementById("optionsRet").style.display = "none"
-		document.getElementById("optionsImage").style.display = "none"
-		document.getElementById("optionsStar").style.display = "none"
-		if (card === "selectRet")
-			document.getElementById("optionsRet").style.display = "block"
-		if (card === "selectImage")
-			document.getElementById("optionsImage").style.display = "block"
-		if (card === "selectStar")
-			document.getElementById("optionsStar").style.display = "block"
-	}
-	function turnBackground(color)
-    {
-    	document.getElementById('background').
-		src='../assets/'+color+'_background.png';
-    }
-	function turnStar(color)
-    {
-		document.getElementById('star').
-		src='../assets/'+color+'_star.png';
-    }
-	function turnRectangle(color)
-    {
-		if(color == "magenta")
-			document.getElementById("ret").style.backgroundColor = "rgba(231,38,136,0.7)";
-		if(color == "yellow")
-			document.getElementById("ret").style.backgroundColor = "rgba(255,205,20,0.7)";;
-		if(color == "cyan")
-			document.getElementById("ret").style.backgroundColor = "rgba(15,207,211,0.7)";
-    }
-	function turnShadow(color)
-    {
-		if(color == "magenta")
-			document.getElementById('img').className = "filter-magenta"
-		else if(color == "yellow")
-			document.getElementById('img').className = "filter-yellow"
-		else if(color == "cyan")
-			document.getElementById('img').className = "filter-cyan"
-    }
-	function starStyle(mode, amount)
-	{
-		if (mode == 'x')
-		{
-			x_star += amount;
-			document.getElementById("star").style.marginLeft = (x_star.toString())+"px"
-		}
-		if (mode == 'y')
-		{
-			y_star += amount;
-			document.getElementById("star").style.marginTop = (y_star.toString())+"px"
-		}
-		if (mode == 's')
-		{
-			s_star += amount;
-			document.getElementById("star").style.width = (s_star.toString())+"px"
-		}
-	}
-	function imageStyle(mode, amount)
-	{
-		if (mode == 'x')
-		{
-			x_img += amount;
-			document.getElementById("img").style.marginLeft = (x_img.toString())+"px"
-		}
-		if (mode == 'y')
-		{
-			y_img += amount;
-			document.getElementById("img").style.marginTop = (y_img.toString())+"px"
-		}
-		if (mode == 's')
-		{
-			s_img += amount;
-			document.getElementById("img").style.width = (s_img.toString())+"px"
-		}
-	}
-	function retStyle(mode, amount)
-	{
-		if (mode == 'x')
-		{
-			x_ret += amount;
-			document.getElementById("ret").style.marginLeft = (x_ret.toString())+"px"
-		}
-		if (mode == 'y')
-		{
-			y_ret += amount;
-			document.getElementById("ret").style.marginTop = (y_ret.toString())+"px"
-		}
-		if (mode == 's')
-		{
-			s_ret += amount;
-			document.getElementById("ret").style.width = (s_ret.toString())+"px"
-			document.getElementById("ret").style.height = ((s_ret/2.5).toString())+"px"
-		}
-	}
-	function takeshot() {
-
-		html2canvas(document.getElementById('canvas'), {
-      useCORS: true,
-      allowTaint: true,
-    }).then(function(canvas){
-			document.body.appendChild(canvas);
-		});
-	}
-
-</script>
-image.crossOrigin = "Anonymous";
