@@ -6,6 +6,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
   <script src="{{ url_for('serve_script', filename='spaceObject.js') }}"></script>
+  <script src="{{ url_for('serve_script', filename='colorControl.js') }}"></script>
+  <script src="{{ url_for('serve_script', filename='moveControl.js') }}"></script>
 <header>
 <body>
   <div id="toComp">
@@ -15,54 +17,14 @@
       </div>
       <div id="controller">
         <div id="changeOption">
+          Move
           <select id="configs" onclick=selectOp()>
-            <option value="selectImage">Move Image</option>
-            <option value="selectStar">Move Star</option>
-            <option value="selectRet">Move Rectangle</option>
+            <option value="selectImage">Image</option>
+            <option value="selectStar">Star</option>
+            <option value="selectRet">Rectangle</option>
           </select>
         </div>
-        <div id="optionsImage">
-          <label for="Image_position">Image Position:</label>
-          <br><br>
-          <input type="button" class=button value="🢁" onclick="imageStyle('y', -10);" style="margin-left: 112px;">
-          <br><br>
-          <input type="button" class=button value="🢀" onclick="imageStyle('x', -10)">
-          <input type="button" class=button value="🢂" onclick="imageStyle('x', 10);" style="margin-left: 116px;">
-          <br><br>
-          <input type="button" class=button value="🢃" onclick="imageStyle('y', 10);" style="margin-left: 112px;">
-          <br><br>
-          <input type="button" class=button value="🞓 decrease size" onclick="imageStyle('s', -50);"style="padding: 1rem 5rem;">
-          <input type="button" class=button value="🞑 increase size" onclick="imageStyle('s', 50);"style="padding: 1rem 5rem;">
-          <br><br>
-        </div>
-        <div id="optionsStar">
-          <label for="star_position">Star Position:</label>
-          <br><br>
-          <input type="button" class=button value="🢁" onclick="starStyle('y', -10);"style="margin-left: 112px;">
-          <br><br>
-          <input type="button" class=button value="🢀" onclick="starStyle('x', -10)">
-          <input type="button" class=button value="🢂" onclick="starStyle('x', 10);"style="margin-left: 116px;">
-          <br><br>
-          <input type="button" class=button value="🢃" onclick="starStyle('y', 10);"style="margin-left: 112px;">
-          <br><br>
-          <input type="button" class=button value="🞓 decrease size" onclick="starStyle('s', -50);"style="padding: 1rem 5rem;">
-          <input type="button" class=button value="🞑 increase size" onclick="starStyle('s', 50);"style="padding: 1rem 5rem;">
-          <br><br>
-        </div>
-        <div id="optionsRet">
-          <label for="Image_position">Rectangle Position:</label>
-          <br><br>
-          <input type="button" class=button value="🢁" onclick="retStyle('y', -10); "style="margin-left: 112px;">
-          <br><br>
-          <input type="button" class=button value="🢀" onclick="retStyle('x', -10)">
-          <input type="button" class=button value="🢂" onclick="retStyle('x', 10); "style="margin-left: 116px;">
-          <br><br>
-          <input type="button" class=button value="🢃" onclick="retStyle('y', 10); "style="margin-left: 112px;">
-          <br><br>
-          <input type="button" class=button value="🞓 decrease size" onclick="retStyle('s', -25);"style="padding: 1rem 5rem;">
-          <input type="button" class=button value="🞑 increase size" onclick="retStyle('s', 25);"style="padding: 1rem 5rem;">
-          <br><br>
-        </div>
+        <div id="moveObjectDiv"></div>
       </div>
     </div>
     <div id="canvas">
@@ -93,29 +55,19 @@
   var sets = ["setX", "setY", "setSize"];
   var cssStyle = ["marginLeft", "marginTop", "width"];
   var gets = ["getX", "getY", "getSize"];
+
   //useful variables
   var imgCSS = document.getElementById("img").style;
   var starCSS = document.getElementById("star").style;
   var retCSS = document.getElementById("ret").style;
-  //trigger change color event
-  var colorObject = ["Background", "Star", "Rectangle", "Shadow"];
-  var htmlString = "";
-  for(var i = 0; i < 4; i++)
-  {
-    htmlString +=
-    '<div id=\'' + colorObject[i] + '\'>\n' +
-    colorObject[i] + '\n' +
-    ' <select id="background_color" onclick="colorSelect(\'' + colorObject[i] + '\', value)">\n' +
-    '   <option value="magenta">MAGENTA</option>\n' +
-    '   <option value="yellow">YELLOW</option>\n' +
-    '   <option value="cyan">CYAN</option>\n' +
-    ' </select>' +
-    '</div>';
-  }
-  //<!-- <input type="color" id="colorpickerShadow" value="#000000"> -->
-  let myDiv = document.getElementById('colorObjects');
-  myDiv.innerHTML = htmlString;
-  //
+
+  //colorControl Template
+  let colorControler = document.getElementById('colorObjects');
+  colorControler.innerHTML = htmlString;
+  //moveControl Template
+  let displacementDiv = document.getElementById('moveObjectDiv');
+  displacementDiv.innerHTML = objectDisplacement;
+
   function colorSelect(object, value){
     var obj = document.getElementById(object).style.background = colorsCode[colors.indexOf(value)];
     console.log(object, value);
