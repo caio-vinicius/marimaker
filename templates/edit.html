@@ -3,25 +3,23 @@
 <header>
 	<title>Marimaker</title>
 	<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
   <script src="{{ url_for('serve_script', filename='spaceObject.js') }}"></script>
   <script src="{{ url_for('serve_script', filename='colorControl.js') }}"></script>
   <script src="{{ url_for('serve_script', filename='moveControl.js') }}"></script>
 <header>
-<body>
-  <div id="toComp">
+<body onload=selectMoveObject()>
+  <div id="page">
     <div id=inputs>
       COLORS
       <div id="colorObjects">
       </div>
-      <div id="controller">
+      <div id="controlObjects">
         <div id="changeOption">
           Move
-          <select id="configs" onclick=selectOp()>
-            <option value="selectImage">Image</option>
-            <option value="selectStar">Star</option>
-            <option value="selectRet">Rectangle</option>
+          <select id="configs" onclick=selectMoveObject(value)>
+            <option value="Image" selected>Image</option>
+            <option value="Star">Star</option>
+            <option value="Rectangle">Rectangle</option>
           </select>
         </div>
         <div id="moveObjectDiv"></div>
@@ -50,7 +48,6 @@
   var colorsCode = ["rgba(231,38,136,0.7)","rgba(255,205,20,0.7)","rgba(15,207,211,0.7)"];
   var filters = ["filter-magenta", "filter-yellow", "filter-cyan"];
   var options = ["optionsRet", "optionsImage", "optionsStar"];
-  var selects = ["selectRet", "selectImage", "selectStar"];
   var modes = ['x','y','s'];
   var sets = ["setX", "setY", "setSize"];
   var cssStyle = ["marginLeft", "marginTop", "width"];
@@ -94,11 +91,13 @@
     }
   };
 
-  function selectOp()
+  function selectMoveObject(value)
 	{
-		var card = document.getElementById("configs").value;
-    for(var i = 0; i < 3; i++)
-      document.getElementById(options[i]).style.display = (card === selects[i] ? "block" : "none");
+    if(!value)
+      value = "Image";
+    changeMoveObject(value);
+    let displacementDiv = document.getElementById('moveObjectDiv');
+    displacementDiv.innerHTML = objectDisplacement;
 	}
 
 	function starStyle(mode, amount)
@@ -155,14 +154,12 @@
 		padding: 5px;
 		width: 550px;
 	}
-  #controller{
-	}
   #colorObjects{
     display: flex;
     align-content: space-between;
     align-items: center;
 	}
-  #toComp{
+  #page{
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
