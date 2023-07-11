@@ -6,4 +6,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-ENTRYPOINT ["sh", "entrypoint.sh"]
+EXPOSE 5000
+
+CMD ["python3", "wsgi.py"]

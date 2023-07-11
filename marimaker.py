@@ -6,7 +6,7 @@ from overlay import do_the_trick
 app = Flask(__name__, static_url_path='/assets')
 app.config['UPLOAD_FOLDER'] = './images'
 app.config['ASSETS'] = './assets'
-app.config['MAX_CONTENT_LENGTH'] = 2 * 1000 * 1000
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1000 * 1000
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
