@@ -1,0 +1,289 @@
+<!doctype html>
+<html>
+<header>
+	<title>Marimaker</title>
+	<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="{{ url_for('serve_script', filename='spaceObject.js') }}"></script>
+  <script src="{{ url_for('serve_script', filename='colorControl.js') }}"></script>
+  <script src="{{ url_for('serve_script', filename='moveControl.js') }}"></script>
+<header>
+<body onload=selectMoveObject()>
+  <div id="page">
+    <div id=inputs>
+      COLORS
+      <div id="colorObjects">
+      </div>
+      <div id="controlObjects">
+        <div id="changeOption">
+          Move
+          <select id="configs" onclick=selectMoveObject(value)>
+            <option value="Image" selected>Image</option>
+            <option value="Star">Star</option>
+            <option value="Rectangle">Rectangle</option>
+          </select>
+        </div>
+        <div id="moveObjectDiv"></div>
+      </div>
+    </div>
+    <div id="canvas">
+      <img id="background" src='../assets/cyan_background.png' width="600"/>
+      <img id="star" src="../assets/magenta_star.png" width="300"/>
+      <img id="img" class="filter-yellow" width="500"/>
+      <img id="ret" />
+		</div>
+  </div>
+<body>
+</html>
+
+<script>
+  //add the path of the image to the "img" object
+	thePath = window.location.href.split("/")[4];
+	document.getElementById("img").src = "../images/"+thePath+".png"
+  //create the location of the canvas objects
+  var star = new spaceObject(0,0,300);
+  var img = new spaceObject(0,0,500);
+  var ret = new spaceObject(250, 250, 100);
+  //arrays to avoid if statements (use in for loops)
+	var colors = ["magenta","yellow","cyan"];
+  var colorsCode = ["rgba(231,38,136,0.7)","rgba(255,205,20,0.7)","rgba(15,207,211,0.7)"];
+  var filters = ["filter-magenta", "filter-yellow", "filter-cyan"];
+  var options = ["optionsRet", "optionsImage", "optionsStar"];
+  var modes = ['x','y','s'];
+  var sets = ["setX", "setY", "setSize"];
+  var cssStyle = ["marginLeft", "marginTop", "width"];
+  var gets = ["getX", "getY", "getSize"];
+
+  //useful variables
+  var imgCSS = document.getElementById("img").style;
+  var starCSS = document.getElementById("star").style;
+  var retCSS = document.getElementById("ret").style;
+
+  //colorControl Template
+  let colorControler = document.getElementById('colorObjects');
+  colorControler.innerHTML = htmlString;
+  //moveControl Template
+  let displacementDiv = document.getElementById('moveObjectDiv');
+  displacementDiv.innerHTML = objectDisplacement;
+
+  function colorSelect(object, value){
+    var obj = document.getElementById(object).style.background = colorsCode[colors.indexOf(value)];
+    console.log(object, value);
+    var funcName = "turn" + object;
+    turnFunctions[funcName](value);
+  }
+
+  var turnFunctions = {
+    turnBackground: function(color) {
+      document.getElementById('background').src='../assets/'+color+'_background.png';
+    },
+    turnStar: function(color) {
+      document.getElementById('star').src='../assets/'+color+'_star.png';
+    },
+    turnRectangle: function(color) {
+    for(var i = 0; i < 3; i++)
+      if(colors[i] === color)
+        retCSS.backgroundColor = colorsCode[i];
+    },
+    turnShadow: function(color) {
+    for(var i = 0; i < 3; i++)
+      if(colors[i] === color)
+        document.getElementById('img').className = filters[i];
+    }
+  };
+
+  function selectMoveObject(value)
+	{
+    if(!value)
+      value = "Image";
+    changeMoveObject(value);
+    let displacementDiv = document.getElementById('moveObjectDiv');
+    displacementDiv.innerHTML = objectDisplacement;
+	}
+
+	function starStyle(mode, amount)
+	{
+    for (let i = 0; i < 3; i++) {
+      if(modes[i] == mode)
+      {
+        star[sets[i]](amount);
+        starCSS[cssStyle[i]] = (star[gets[i]]().toString())+"px"
+      }
+    }
+	}
+
+	function imageStyle(mode, amount)
+	{
+    for (let i = 0; i < 3; i++) {
+      if(modes[i] == mode)
+      {
+        img[sets[i]](amount);
+        imgCSS[cssStyle[i]] = (img[gets[i]]().toString())+"px"
+      }
+    }
+	}
+
+	function retStyle(mode, amount)
+	{
+    for (let i = 0; i < 2; i++) {
+      if(modes[i] == mode)
+      {
+        ret[sets[i]](amount);
+        retCSS[cssStyle[i]] = (ret[gets[i]]().toString())+"px"
+      }
+    }
+    if(mode == 's')
+    {
+      ret.setSize(amount);
+      retCSS.height = ((ret.getSize()/2.5).toString())+"px";
+      retCSS.width = (ret.getSize().toString())+"px";
+    }
+	}
+</script>
+
+<style>
+	#canvas{
+		/* To define */
+		width: 600px;
+		height: 600px;
+    /* border:10px solid black; */
+    z-index: 5;
+	}
+  #inputs{
+		z-index: 4;
+		background-color: #f2f2f2;
+		padding: 5px;
+		width: 550px;
+	}
+  #colorObjects{
+    display: flex;
+    align-content: space-between;
+    align-items: center;
+	}
+  #page{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+  }
+  #configs{
+    width: 50%;
+    height: 50px;
+  }
+  select{
+    background:  rgba(0, 0, 0, 0.2);
+    color: white;
+  }
+  select option {
+    margin: 40px;
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+  }
+  select option[value="magenta"] {
+    background: rgba(231,38,136,0.7);
+  }
+  select option[value="yellow"] {
+    background: rgba(255,205,20,0.7);
+  }
+  select option[value="cyan"] {
+    background: rgba(15,207,211,0.7);
+  }
+	#optionsRet{
+		display: none;
+	}
+	#optionsImage{
+		display: block;
+	}
+	#optionsStar{
+		display: none;
+	}
+	#optionsShadow{
+		display: none;
+	}
+	img{
+		position: absolute;
+	}
+	#background {
+		z-index: 0;
+	}	
+	#star{
+		z-index: 1;
+	}
+	#img{
+		z-index: 2;
+	}
+	#ret{
+		z-index: 3;
+		width: 150px;
+		height: 60px;
+		background-color: rgba(231,38,136,0.7);
+		border: none;
+		mix-blend-mode: color;
+		margin-top: 250px;
+		margin-left: 250px;
+	}
+
+	.filter-yellow {
+		filter: drop-shadow( -20px -7px rgba(250,205,20,1))
+				drop-shadow( 20px -7px rgba(250,205,20,1));
+	}
+	.filter-magenta{
+		filter: drop-shadow( -20px -7px rgba(231,38,136,1)) drop-shadow( 20px -7px rgba(231,38,136,1));
+	}
+	.filter-cyan{
+		filter: drop-shadow( -20px -7px rgba(15,207,211,1)) drop-shadow( 20px -7px rgba(15,207,211,1));
+	}
+
+	input{
+		width: 100px;
+	}
+
+	.button{
+		align-items: center;
+		background-color: #fff;
+		border-radius: 12px;
+		box-shadow: transparent 0 0 0 3px,rgba(18, 18, 18, .1) 0 6px 20px;
+		box-sizing: border-box;
+		color: #121212;
+		cursor: pointer;
+		display: inline-flex;
+		flex: 1 1 auto;
+		font-family: Inter,sans-serif;
+		font-size: 1.2rem;
+		font-weight: 300;
+		justify-content: center;
+		line-height: 1;
+		margin: 0;
+		outline: none;
+		padding: 1rem 1.2rem;
+		text-align: center;
+		text-decoration: none;
+		transition: box-shadow .2s,-webkit-box-shadow .2s;
+		white-space: nowrap;
+		border: 0;
+		user-select: none;
+		-webkit-user-select: none;
+		touch-action: manipulation;
+	}
+
+	.button:hover {
+	box-shadow: #121212 0 0 0 3px, transparent 0 0 0 0;
+	}
+
+	*{
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	}
+
+	.bgc_magenta{
+		background-color: rgba(231,38,136,0.7);
+	}
+	.bgc_yellow{
+		background-color: rgba(255,205,20,0.7);
+	}
+	.bgc_cyan{
+		background-color: rgba(15,207,211,0.7);
+	}
+	body{
+    zoom: 90%;
+    background-color: #fcfcfc;
+	  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	}
+</style>
